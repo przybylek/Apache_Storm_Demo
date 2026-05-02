@@ -38,7 +38,7 @@ mvn --version     # should show 3.8+ and Java 17
 
 ```bash
 git clone git@github.com:przybylek/Apache_Storm_Demo.git
-cd Apache_Storm_Demo/storm-docker
+cd Apache_Storm_Demo
 ```
 
 
@@ -163,12 +163,14 @@ docker compose down
 
 ## Redeploying After Code Changes
 
-If you modify any Java source file, repeat steps 3–4:
+If you modify any Java source file:
 
 ```bash
-mvn clean package -DskipTests
+docker exec supervisor bash -c 'rm -rf /logs/workers-artifacts/twitter-word-count-*'
 docker exec nimbus storm kill twitter-word-count
+mvn clean package -DskipTests
 sleep 20
+docker exec nimbus storm list
 docker cp target/storm-example-0.0.1-SNAPSHOT-jar-with-dependencies.jar nimbus:/tmp/topology.jar
 docker exec nimbus storm jar /tmp/topology.jar TwitterTopology remote
 ```

@@ -17,6 +17,7 @@ public class SplitSentenceBolt extends BaseBasicBolt {
         String[] words = sentence.split("[\\s~`!@#$%^&*(-)+=_:;'\",.<>?/\\\\0-9" + "\\]\\[\\}\\{]+");
         for (String word : words) {
             if (keys.contains(word.toLowerCase())) {
+                System.out.println("[SPLIT] " + word.toLowerCase()); 
                 collector.emit(new Values(word.toLowerCase()));
             }
         }
